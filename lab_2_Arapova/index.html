@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГЕНЕРАТОР ПАРОЛЕЙ</title>
+</head>
+
+<body>
+    <h1>ГЕНЕРАТОР ПАРОЛЕЙ</h1>
+    <form id="passForm1">
+        <div>
+            <label for="nPass">Количество паролей:</label>
+            <input type="number" id="nPass" min="1" max="10" required>
+        </div>
+        <div>
+            <label for="passLen">Длина пароля:</label>
+            <input type="number" id="passLen" min="5" max="20" required>
+        </div>
+        <div>
+            <label for="bigW">Прописные буквы</label>
+            <input type="checkbox" id="bigW">
+        </div>
+        <div>
+            <label for="litW">Строчные буквы</label>
+            <input type="checkbox" id="litW" checked>
+        </div>
+        <div>
+            <label for="numbs">Цифры</label>
+            <input type="checkbox" id="numbs" checked>
+        </div>
+        <div>
+            <label for="symbs">Символы</label>
+            <input type="checkbox" id="symbs">
+        </div>
+
+        <button type="submit">СГЕНЕРИРОВАТЬ</button>
+    </form>
+
+    <div id="passForm2">    
+    </div>
+
+    <script>
+        const passForm1 = document.getElementById('passForm1');
+        const passForm2 = document.getElementById('passForm2');
+
+        passForm1.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const passLen = document.getElementById('passLen').value;
+            const nPass = document.getElementById('nPass').value;
+            const bigW = document.getElementById('bigW').checked;
+            const litW = document.getElementById('litW').checked;
+            const numbs = document.getElementById('numbs').checked;
+            const symbs = document.getElementById('symbs').checked;
+
+            let yesChar = '';
+            if (bigW) yesChar += 'QWERTYUIOPASDFGHJKLZXCVBNM';
+            if (litW) yesChar += 'qwertyuiopasdfghjklzxcvbnm';
+            if (numbs) yesChar += '1234567890';
+            if (symbs) yesChar += '!@#$%^&*()_+';
+
+            let genPass = '';
+            for (let i = 0; i < nPass; i++) {
+                let pass = '';
+                for (let j = 0; j < passLen; j++) {
+                    pass += yesChar.charAt(Math.floor(Math.random() * yesChar.length));
+                }
+                genPass += `${pass}\n`;
+            }
+
+            const blob = new Blob([genPass], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'your_password(s).txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            passForm2.innerHTML = genPass.replace(/\n/g, '<br>');
+        });
+    </script>
+
+<style>
+    body {
+        background-color: #ffffff;
+        font-family: 'bookman old style';
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+    }
+
+    h1 {
+        color: #962247;
+        font-size: 40pt;
+        font-weight: lighter;
+        text-align: center;
+    }
+
+    #passForm1 {
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px #8a6470;
+        line-height: 25pt;
+        padding: 25px;
+        padding-bottom: 10px;
+        margin: 10px;
+        
+    }
+
+    #passForm1 label {
+        font-size: 15pt;
+        display: inline-block; 
+        width: 250px;
+        margin-bottom: 1px;
+    }
+
+    #passForm1 input[type="number"] {
+        width: 50px;
+        height: 15px;
+    }
+    
+    #passForm1 input[type="checkbox"] {
+        margin-left: 0px;
+        margin-top: 10px;
+        height: 20px;
+    }
+
+    #passForm1 button {
+        background-color: #710f2e;
+        font-family: 'bookman old style';
+        height: auto; 
+        margin: 10px auto;
+        padding: 20px;
+        font-size: 20px;
+        color: white;
+        text-align: center;
+        text-decoration:solid;
+        display: block;
+        cursor:auto;
+    }
+
+    #passForm2 {
+        background-color: #ffffff;
+        font-family: 'bookman old style';
+        text-align: center;
+        margin: 20px;
+        padding: 20px;
+        box-shadow: 0px 0px 4px #8a6470;
+        width: 300px;
+    }
+
+    #enjoyMessage {
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+
+</body>
+</html>
